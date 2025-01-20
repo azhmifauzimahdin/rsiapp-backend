@@ -22,3 +22,6 @@ yarn-error.log
 /.vscode
 /.zed
 /rsiapp
+/rsi-sep
+/rsi-sign
+/rsi-sign-v1

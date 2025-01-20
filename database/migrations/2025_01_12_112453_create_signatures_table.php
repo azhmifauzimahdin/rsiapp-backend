@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('guarantors', function (Blueprint $table) {
+        Schema::create('signatures', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100);
+            $table->string("rm", 10);
+            $table->string("name", 100);
+            $table->string("image", 36);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('guarantors');
+        Schema::dropIfExists('signatures');
     }
 };

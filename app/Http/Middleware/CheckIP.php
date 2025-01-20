@@ -14,11 +14,11 @@ class CheckIP
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $type = 0): Response
     {
         $ipAddress = $request->ip();
 
-        if (IpAddress::where('name', $ipAddress)->first()) {
+        if (IpAddress::where('name', $ipAddress)->where('type', $type)->first()) {
             return $next($request);
         }
 

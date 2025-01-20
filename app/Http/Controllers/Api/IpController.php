@@ -14,11 +14,12 @@ class IpController extends BaseController
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
+            'type' => ['required']
         ]);
 
         if ($validator->fails()) return $this->sendErrorValidation($validator->errors());
 
-        $ip = IpAddress::where('name', $request->name)->first();
+        $ip = IpAddress::where('name', $request->name)->where('type', $request->type)->first();
 
         if ($ip) return $this->sendError('Gagal tambah data IP Address.', ['error' => 'IP Address sudah ada.']);
 
@@ -31,26 +32,13 @@ class IpController extends BaseController
         return $this->sendFail();
     }
 
-    public function authorization(): JsonResponse
+    public function authorization(Request $request): JsonResponse
     {
-        $response = [
-            'code'    => 200,
-            'success' => true,
-            'message' => "Authorized",
-        ];
-        return response()->json($response, 200);
+        return $this->sendResponse('Authorized', ['IP_Address' => $request->ip()]);
     }
 
     public function ipCheck(Request $request): JsonResponse
     {
-        $data['IP_Address'] =  $request->ip();
-        $response = [
-            'code'    => 200,
-            'success' => true,
-            'message' => "Berhasil ambil IP Address",
-            'data'    => $data
-        ];
-
-        return response()->json($response, 200);
+        return $this->sendResponse('Berhasil ambil IP Address', ['IP_Address' => $request->header('X-Forwarded-For') ?? $request->getClientIp(), 'IP_Address_ip' => $request->ip(),]);
     }
 }

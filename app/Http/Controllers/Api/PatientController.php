@@ -19,7 +19,7 @@ class PatientController extends BaseController
 
     public function today(): JsonResponse
     {
-        $patients = Patient::whereDate('created_at', Carbon::today())->orderBy('updated_at', 'desc')->get();
+        $patients = Patient::whereDate('created_at', Carbon::today())->orWhereDate('created_at', Carbon::yesterday())->orderBy('updated_at', 'desc')->get();
         return $this->sendResponse('Berhasil ambil data pasien.', ['patients' => $patients]);
     }
 
